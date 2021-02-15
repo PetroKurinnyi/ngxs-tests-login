@@ -7,23 +7,29 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxsModule } from '@ngxs/store';
 import { environment } from '../environments/environment';
-import { MaterialModule } from './utils/material.module';
+
+import * as fromModules from './index';
+import { AppState } from './state/app.state';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     FlexLayoutModule,
-    NgxsModule.forRoot([], {
-      developmentMode: !environment.production
+    NgxsModule.forRoot([AppState], {
+      developmentMode: !environment.production,
     }),
-    MaterialModule
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+    ...fromModules.modules,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

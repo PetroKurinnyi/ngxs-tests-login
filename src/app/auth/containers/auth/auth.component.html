@@ -1,0 +1,39 @@
+<form class="container" [formGroup]="form" fxLayout="column">
+  <div class="logo" fxLayoutAlign="center center">Logo</div>
+  <h1>Log in</h1>
+  <mat-form-field appearance="outline" class="email-field">
+    <mat-label>E-mail</mat-label>
+    <input formControlName="email" matInput placeholder="E-mail" type="text" />
+    <mat-error *ngIf="form.controls.email.errors?.pattern">E-mail incorrect</mat-error>
+    <mat-error *ngIf="form.controls.email.errors?.required">Required field</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="password-field">
+    <mat-label>Password</mat-label>
+    <input formControlName="password" matInput [type]="hide ? 'password' : 'text'" />
+    <button
+      mat-icon-button
+      matSuffix
+      (click)="hide = !hide"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide"
+    >
+      <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+    <mat-error *ngIf="form.controls.password.errors?.required">Required field</mat-error>
+    <mat-error *ngIf="form.controls.password.errors?.minlength">Need more characters</mat-error>
+  </mat-form-field>
+
+  <a class="forgot" (click)="forgotPass()">Forgot the password</a>
+
+  <div class="buttons-container" fxLayoutAlign="end center">
+    <button
+      mat-flat-button
+      (click)="login()"
+      [disabled]="form.invalid || (status$ | async) === 'loading'"
+      [class.spinner]="(status$ | async) === 'loading'"
+    >
+      Log in
+    </button>
+  </div>
+</form>
